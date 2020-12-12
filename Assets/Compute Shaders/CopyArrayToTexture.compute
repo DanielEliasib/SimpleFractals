@@ -13,7 +13,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 {
     // TODO: insert actual code here!
     if (id.y * width + id.x < arrayLenght)
-        Result[id.xy] = half4(_Data[id.y*width + id.x], 1.0);
+        Result[id.xy] = half4(_Data[id.y*width + id.x]*10, 1.0);
         //Result[id.xy] = half4(0.0, 1.0, 0.0, 1.0);
     else
         Result[id.xy] = half4(maxValue, maxValue, maxValue, 0.0);

@@ -32,11 +32,19 @@ public class GameManager : MonoBehaviour
 
         _Processor = new FractalProcessor(A);
 
+        //_Processor.SetFunctions(new List<System.Func<float3, float3>>()
+        //{
+        //    (float3 p) => 0.5f*p,
+        //    (float3 p) => 0.5f*p + new float3(0.5f, 0.0f, 0.0f),
+        //    (float3 p) => 0.5f*p + new float3(0.25f, 0.5f, 0.0f),
+        //});
+
         _Processor.SetFunctions(new List<System.Func<float3, float3>>()
         {
-            (float3 p) => 0.5f*p,
-            (float3 p) => 0.5f*p + new float3(0.5f, 0.0f, 0.0f),
-            (float3 p) => 0.5f*p + new float3(0.25f, 0.5f, 0.0f),
+            (float3 p) => new float3(0.14f*p.x + 0.01f*p.y - 0.08f, 0.51f*p.y - 1.31f, 0.0f),
+            (float3 p) => new float3(0.43f*p.x + 0.52f*p.y + 1.49f, -0.45f*p.x + 0.5f*p.y - 0.75f, 0.0f),
+            (float3 p) => new float3(0.45f*p.x - 0.49f*p.y - 1.62f, 0.47f*p.x + 0.47f*p.y - 0.74f, 0.0f),
+            (float3 p) => new float3(0.49f*p.x + 0.02f, 0.51f*p.y + 1.62f, 0.0f),
         });
 
         _Processor.CalculateForIterations(10);
