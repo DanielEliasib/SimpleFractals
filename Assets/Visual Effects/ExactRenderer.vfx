@@ -162,8 +162,8 @@ VisualEffectResource:
       /*inout */attributes.position, attributes.particleId, GetVFXSampler(attributeMap_a,
       samplerattributeMap_a), (uint)0, float3(0, 0, 0), float3(1, 1, 1));\n       
       }\n        {\n            SetAttribute_3278B22F( /*inout */attributes.size,
-      (float)0.100000001);\n        }\n        {\n            SetAttribute_CEEAF35C(
-      /*inout */attributes.alpha, (float)0.899999976);\n        }\n        {\n           
+      (float)0.0250000004);\n        }\n        {\n            SetAttribute_CEEAF35C(
+      /*inout */attributes.alpha, (float)0.400000006);\n        }\n        {\n           
       SetAttribute_FDD06EC7( /*inout */attributes.color, float3(0.205366701, 0.437164068,
       0.613207579));\n        }\n        \n\r\n\t\t\r\n#if VFX_USE_ALIVE_CURRENT\r\n       
       if (attributes.alive)\r\n#endif       \r\n        {\r\n#if USE_DEAD_LIST\r\n\t       
@@ -785,9 +785,9 @@ VisualEffectResource:
         - m_ExpressionIndex: 2
           m_Value: 0
         - m_ExpressionIndex: 11
-          m_Value: 0.1
+          m_Value: 0.025
         - m_ExpressionIndex: 12
-          m_Value: 0.9
+          m_Value: 0.4
       m_Vector2f:
         m_Array:
         - m_ExpressionIndex: 5
@@ -2312,7 +2312,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.1
+      m_SerializableObject: 0.025
     m_Space: 2147483647
   m_Property:
     name: Size
@@ -2378,7 +2378,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.9
+      m_SerializableObject: 0.4
     m_Space: 2147483647
   m_Property:
     name: Alpha

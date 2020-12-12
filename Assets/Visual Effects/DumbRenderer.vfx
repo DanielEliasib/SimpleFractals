@@ -184,8 +184,8 @@ VisualEffectResource:
       float tmp_bf = tmp_bc[2];\n            float3 tmp_bg = float3(tmp_bd, tmp_be,
       tmp_bf);\n            SetAttribute_FDD06EC7( /*inout */attributes.color, tmp_bg);\n       
       }\n        {\n            SetAttribute_3278B545( /*inout */attributes.size, 
-      /*inout */attributes.seed, (float)0.5, (float)0.100000001);\n        }\n       
-      \n\r\n\t\t\r\n#if VFX_USE_ALIVE_CURRENT\r\n        if (attributes.alive)\r\n#endif      
+      /*inout */attributes.seed, (float)0.100000001, (float)0.0500000007);\n       
+      }\n        \n\r\n\t\t\r\n#if VFX_USE_ALIVE_CURRENT\r\n        if (attributes.alive)\r\n#endif      
       \r\n        {\r\n#if USE_DEAD_LIST\r\n\t        uint deadIndex = deadListIn.DecrementCounter();\r\n           
       uint index = deadListIn[deadIndex];\r\n#else\r\n            uint index = particleIndex;\r\n#endif\r\n           
       attributeBuffer.Store3((index * 0x8 + 0x0) << 2,asuint(attributes.position));\n           
@@ -911,11 +911,11 @@ VisualEffectResource:
         - m_ExpressionIndex: 10
           m_Value: 0
         - m_ExpressionIndex: 16
-          m_Value: 0.5
+          m_Value: 0.1
         - m_ExpressionIndex: 17
           m_Value: 3
         - m_ExpressionIndex: 22
-          m_Value: 0.1
+          m_Value: 0.05
       m_Vector2f:
         m_Array: []
       m_Vector3f:
@@ -5069,7 +5069,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.5
+      m_SerializableObject: 0.1
     m_Space: 2147483647
   m_Property:
     name: A
@@ -5109,7 +5109,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.1
+      m_SerializableObject: 0.05
     m_Space: 2147483647
   m_Property:
     name: B
