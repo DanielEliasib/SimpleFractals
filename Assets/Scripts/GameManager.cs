@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour
         List<float2> A = new List<float2>();
 
         A.Add(float2.zero);
-        A.Add(new float2(0.0f, 0.5f));
-        A.Add(new float2(0.5f, 0.5f));
-        A.Add(new float2(0.5f, 0.0f));
+        //A.Add(new float2(0.0f, 0.5f));
+        //A.Add(new float2(0.5f, 0.5f));
+        //A.Add(new float2(0.5f, 0.0f));
 
         _Processor = new FractalProcessor(A);
 
