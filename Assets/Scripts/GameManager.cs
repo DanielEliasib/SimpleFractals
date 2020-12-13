@@ -27,38 +27,47 @@ public class GameManager : MonoBehaviour
     {
         watch = new System.Diagnostics.Stopwatch();
 
-        //_Processor.SetFunctions(new List<System.Func<float3, float3>>()
+        //var ifs = new List<System.Func<float3, float3>>()
         //{
         //    (float3 p) => 0.5f*p,
         //    (float3 p) => 0.5f*p + new float3(0.5f, 0.0f, 0.0f),
         //    (float3 p) => 0.5f*p + new float3(0.25f, 0.5f, 0.0f),
-        //});
+        //};
 
-        //_Processor.SetFunctions(new List<System.Func<float3, float3>>()
+        //var ifs = new List<System.Func<float3, float3>>()
         //{
         //    (float3 p) => new float3(0.14f*p.x + 0.01f*p.y - 0.08f, 0.51f*p.y - 1.31f, 0.0f),
         //    (float3 p) => new float3(0.43f*p.x + 0.52f*p.y + 1.49f, -0.45f*p.x + 0.5f*p.y - 0.75f, 0.0f),
         //    (float3 p) => new float3(0.45f*p.x - 0.49f*p.y - 1.62f, 0.47f*p.x + 0.47f*p.y - 0.74f, 0.0f),
         //    (float3 p) => new float3(0.49f*p.x + 0.02f, 0.51f*p.y + 1.62f, 0.0f),
-        //});
+        //};
 
         watch.Reset();
         watch.Start();
 
-        float[] par1 = new float[] { 0.0f, 0.0f, 0.0f, 0.16f, 0.0f, 0.0f };
-        float[] par2 = new float[] { 0.2f, -0.26f, 0.23f, 0.22f, 0.0f, 1.6f };
-        float[] par3 = new float[] { -0.15f, 0.28f, 0.26f, 0.24f, 0.44f, 0.0f };
-        float[] par4 = new float[] { 0.85f, 0.04f, -0.04f, 0.85f, 0.0f, 1.6f };
+        //float[] par1 = new float[] { 0.0f, 0.0f, 0.0f, 0.16f, 0.0f, 0.0f };
+        //float[] par2 = new float[] { 0.2f, -0.26f, 0.23f, 0.22f, 0.0f, 1.6f };
+        //float[] par3 = new float[] { -0.15f, 0.28f, 0.26f, 0.24f, 0.0f, 0.44f };
+        //float[] par4 = new float[] { 0.85f, 0.04f, -0.04f, 0.85f, 0.0f, 1.6f };
+
+        //float[] probs = new float[] { 0.01f, 0.07f, 0.07f, 0.85f};
+
+        float[] par1 = new float[] { 0.14f, 0.01f, 0.0f, 0.51f, -0.08f, -1.31f };
+        float[] par2 = new float[] { 0.43f, 0.52f, -0.45f, 0.50f, 1.49f, -0.75f };
+        float[] par3 = new float[] { 0.45f, -0.49f, 0.47f, 0.47f, -1.62f, -0.74f };
+        float[] par4 = new float[] { 0.49f, 0.0f, 0.0f, 0.51f, 0.02f, 1.62f };
 
         var ifs = new List<System.Func<float3, float3>>()
         {
-            (float3 p) => new float3(par1[0]*p.x + par1[1]*p.y + par1[4],par1[2]*p.x + par1[3]*p.y + par1[4] , 0.0f),
-            (float3 p) => new float3(par2[0]*p.x + par2[1]*p.y + par2[4],par2[2]*p.x + par2[3]*p.y + par2[4] , 0.0f),
-            (float3 p) => new float3(par3[0]*p.x + par3[1]*p.y + par3[4],par3[2]*p.x + par3[3]*p.y + par3[4] , 0.0f),
-            (float3 p) => new float3(par4[0]*p.x + par4[1]*p.y + par4[4],par4[2]*p.x + par4[3]*p.y + par4[4] , 0.0f)
+            (float3 p) => new float3(par1[0]*p.x + par1[1]*p.y + par1[4],par1[2]*p.x + par1[3]*p.y + par1[5] , 0.0f),
+            (float3 p) => new float3(par2[0]*p.x + par2[1]*p.y + par2[4],par2[2]*p.x + par2[3]*p.y + par2[5] , 0.0f),
+            (float3 p) => new float3(par3[0]*p.x + par3[1]*p.y + par3[4],par3[2]*p.x + par3[3]*p.y + par3[5] , 0.0f),
+            (float3 p) => new float3(par4[0]*p.x + par4[1]*p.y + par4[4],par4[2]*p.x + par4[3]*p.y + par4[5] , 0.0f)
         };
 
-        GenerateFractal(new List<float3>() { float3.zero }, 10, ifs, out _PlottingData);
+        _PlottingData = new List<float3>();
+
+        GenerateFractal(new List<float3>() { float3.zero }, 10, ifs, null, false, ref _PlottingData);
 
         watch.Stop();
 
@@ -81,20 +90,19 @@ public class GameManager : MonoBehaviour
         Graphics.Blit(_InternalPointDataTexture, _ExternPointDataTexture);
 
         watch.Stop();
-        Debug.Log($"Time spent copying: {watch.Elapsed.TotalMilliseconds}");
+        // Debug.Log($"Time spent copying: {watch.Elapsed.TotalMilliseconds}");
     }
 
-    private void GenerateFractal(List<float3> initialSet, int iterations, List<System.Func<float3, float3>> ifs, out List<float3> fractal)
+    private void GenerateFractal(List<float3> initialSet, int iterations, List<System.Func<float3, float3>> ifs, float[] probabilities, bool useProbabilities, ref List<float3> fractal)
     {
-        var _Processor = new FractalProcessor(initialSet);
+        var _Processor = new FractalProcessor(initialSet, _ExternPointDataTexture.width * _ExternPointDataTexture.height);
 
         _Processor.SetFunctions(ifs);
+        _Processor.SetProbabilities(probabilities);
 
-        _Processor.CalculateForIterations(iterations);
+        _Processor.CalculateForIterations(iterations, useProbabilities);
 
-        List<float3> B = new List<float3>();
-        _Processor.GetData(ref B);
-        fractal = B;
+        _Processor.GetData(ref fractal);
     }
 
     private void InitializeTextures()

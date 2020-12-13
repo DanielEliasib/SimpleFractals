@@ -1,0 +1,33 @@
+{
+    "name": "ActionMap",
+    "maps": [
+        {
+            "name": "CameraController",
+            "id": "a7fbb3a0-f85d-4f67-a359-81e0a41c6455",
+            "actions": [
+                {
+                    "name": "DeltaAxis",
+                    "type": "Value",
+                    "id": "0d79865f-d234-47d3-a2de-b7fc63022d8f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7e8486cd-c425-4580-9e77-eabd34dacf6b",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeltaAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
