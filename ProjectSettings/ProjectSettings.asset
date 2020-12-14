@@ -12,15 +12,15 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: SimpleFractals
+  companyName: DanielEliasib
+  productName: Simple Fractals
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
-  m_SplashScreenAnimation: 1
+  m_SplashScreenAnimation: 0
   m_SplashScreenLogoStyle: 1
   m_SplashScreenDrawMode: 0
   m_SplashScreenBackgroundAnimationZoom: 1
@@ -42,12 +42,12 @@ PlayerSettings:
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
-  defaultScreenWidth: 1024
-  defaultScreenHeight: 768
+  defaultScreenWidth: 1280
+  defaultScreenHeight: 720
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_StereoRenderingPath: 0
-  m_ActiveColorSpace: 0
+  m_ActiveColorSpace: 1
   m_MTRendering: 1
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
@@ -78,11 +78,11 @@ PlayerSettings:
   submitAnalytics: 1
   usePlayerLog: 1
   bakeCollisionMeshes: 0
-  forceSingleInstance: 0
+  forceSingleInstance: 1
   useFlipModelSwapchain: 1
   resizableWindow: 0
   useMacAppStoreValidation: 0
-  macAppStoreCategory: public.app-category.games
+  macAppStoreCategory: public.simulator
   gpuSkinning: 0
   xboxPIXTextureCapture: 0
   xboxEnableAvatar: 0
@@ -90,8 +90,8 @@ PlayerSettings:
   xboxEnableKinectAutoTracking: 0
   xboxEnableFitness: 0
   visibleInBackground: 1
-  allowFullscreenSwitch: 1
-  fullscreenMode: 1
+  allowFullscreenSwitch: 0
+  fullscreenMode: 3
   xboxSpeechDB: 0
   xboxEnableHeadOrientation: 0
   xboxEnableGuest: 0
@@ -122,7 +122,8 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -164,7 +165,8 @@ PlayerSettings:
   resolutionScalingMode: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DanielEliasib.SimpleFractals
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 19
@@ -259,7 +261,14 @@ PlayerSettings:
   androidGamepadSupportLevel: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: 04afba287018c894791984f27d4dd16e, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons: []
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsJobs:
@@ -297,6 +306,12 @@ PlayerSettings:
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: AndroidPlayer
     m_APIs: 150000000b000000
+    m_Automatic: 0
+  - m_BuildTarget: MacStandaloneSupport
+    m_APIs: 1000000011000000
+    m_Automatic: 0
+  - m_BuildTarget: LinuxStandaloneSupport
+    m_APIs: 1100000015000000
     m_Automatic: 0
   m_BuildTargetVRSettings: []
   openGLRequireES31: 0
