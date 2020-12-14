@@ -151,13 +151,13 @@ VisualEffectResource:
       inputAdditional;\r\n#endif\r\n\r\n#if HAS_STRIPS\r\nRWBuffer<uint> stripDataBuffer;\r\n#endif\r\n\r\n#include
       \"Packages/com.unity.visualeffectgraph/Shaders/Common/VFXCommonCompute.hlsl\"\n#include
       \"Packages/com.unity.visualeffectgraph/Shaders/VFXCommon.hlsl\"\n\n\r\n\r\nvoid
-      AttributeFromMap_6F6C36D5(inout float3 position, uint particleId, VFXSampler2D
-      attributeMap, uint Seed, float3 valueBias, float3 valueScale) /*attribute:position
-      Composition:Overwrite SampleMode:RandomConstantPerParticle channels:XYZ */\n{\n   
-      \n    uint width, height;\n    attributeMap.t.GetDimensions(width, height);\n   
-      uint count = width * height;\n    uint id = FIXED_RAND(Seed) * count;\n   
-      uint y = id / width;\n    uint x = id - y * width;\n    float3 value = (float3)attributeMap.t.Load(int3(x,
-      y, 0));\n    value = (value  + valueBias) * valueScale;\n    position = value;\n}\nvoid
+      AttributeFromMap_6F6C3099(inout float3 position, uint particleId, VFXSampler2D
+      attributeMap, float3 valueBias, float3 valueScale) /*attribute:position Composition:Overwrite
+      SampleMode:Sequential channels:XYZ */\n{\n    \n    uint width, height;\n   
+      attributeMap.t.GetDimensions(width, height);\n    uint count = width * height;\n   
+      uint id = particleId % count;\n    uint y = id / width;\n    uint x = id -
+      y * width;\n    float3 value = (float3)attributeMap.t.Load(int3(x, y, 0));\n   
+      value = (value  + valueBias) * valueScale;\n    position = value;\n}\nvoid
       SetAttribute_3278B22F(inout float size, float Size) /*attribute:size Composition:Overwrite
       Source:Slot Random:Off channels:XYZ */\n{\n    size = Size;\n}\nvoid SetAttribute_CEEAF35C(inout
       float alpha, float Alpha) /*attribute:alpha Composition:Overwrite Source:Slot
@@ -201,12 +201,12 @@ VisualEffectResource:
       return;\r\n\r\n        const StripData stripData = GetStripDataFromStripIndex(stripIndex,
       PARTICLE_PER_STRIP_COUNT);\r\n\t\tInitStripAttributes(particleIndex, attributes,
       stripData);\r\n\t\t// TODO Change seed to be sure we're deterministic on random
-      with strip\r\n#endif\r\n        \r\n        {\n            AttributeFromMap_6F6C36D5(
+      with strip\r\n#endif\r\n        \r\n        {\n            AttributeFromMap_6F6C3099(
       /*inout */attributes.position, attributes.particleId, GetVFXSampler(attributeMap_a,
-      samplerattributeMap_a), (uint)0, float3(0, 0, 0), float3(1, 1, 1));\n       
-      }\n        SetAttribute_3278B22F( /*inout */attributes.size, Size_b);\n       
-      SetAttribute_CEEAF35C( /*inout */attributes.alpha, Alpha_c);\n        SetAttribute_FDD06EC7(
-      /*inout */attributes.color, Color_d);\n        \n\r\n\t\t\r\n#if VFX_USE_ALIVE_CURRENT\r\n       
+      samplerattributeMap_a), float3(0, 0, 0), float3(1, 1, 1));\n        }\n       
+      SetAttribute_3278B22F( /*inout */attributes.size, Size_b);\n        SetAttribute_CEEAF35C(
+      /*inout */attributes.alpha, Alpha_c);\n        SetAttribute_FDD06EC7( /*inout
+      */attributes.color, Color_d);\n        \n\r\n\t\t\r\n#if VFX_USE_ALIVE_CURRENT\r\n       
       if (attributes.alive)\r\n#endif       \r\n        {\r\n#if USE_DEAD_LIST\r\n\t       
       uint deadIndex = deadListIn.DecrementCounter();\r\n            uint index =
       deadListIn[deadIndex];\r\n#else\r\n            uint index = particleIndex;\r\n#endif\r\n           
@@ -701,72 +701,72 @@ VisualEffectResource:
         data[1]: -1
         data[2]: -1
         data[3]: 5
-      - op: 1
-        valueIndex: 1
-        data[0]: -1
-        data[1]: -1
-        data[2]: -1
-        data[3]: 4
       - op: 65
-        valueIndex: 5
+        valueIndex: 1
         data[0]: 0
         data[1]: -1
         data[2]: -1
         data[3]: -1
       - op: 1
-        valueIndex: 6
+        valueIndex: 2
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 1
+      - op: 1
+        valueIndex: 3
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: 4
       - op: 31
         valueIndex: 7
-        data[0]: 2
-        data[1]: 3
+        data[0]: 1
+        data[1]: 2
         data[2]: -1
         data[3]: 1
       - op: 5
         valueIndex: 8
-        data[0]: 1
+        data[0]: 3
         data[1]: -1
         data[2]: 1
         data[3]: 4
       - op: 5
         valueIndex: 9
-        data[0]: 1
+        data[0]: 3
         data[1]: -1
         data[2]: 0
         data[3]: 4
       - op: 5
         valueIndex: 10
-        data[0]: 1
+        data[0]: 3
         data[1]: -1
         data[2]: 2
         data[3]: 4
-      - op: 3
+      - op: 2
         valueIndex: 11
+        data[0]: 4
+        data[1]: 4
+        data[2]: -1
+        data[3]: -1
+      - op: 3
+        valueIndex: 13
         data[0]: 6
         data[1]: 5
         data[2]: 7
         data[3]: -1
       - op: 1
-        valueIndex: 14
+        valueIndex: 16
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 3
       - op: 1
-        valueIndex: 17
+        valueIndex: 19
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 6
-      - op: 2
-        valueIndex: 18
-        data[0]: 4
-        data[1]: 4
-        data[2]: -1
-        data[3]: -1
+        data[3]: 7
       - op: 1
         valueIndex: 20
         data[0]: -1
@@ -778,33 +778,27 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 7
+        data[3]: 3
       - op: 1
-        valueIndex: 22
+        valueIndex: 24
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 3
       - op: 1
-        valueIndex: 25
-        data[0]: -1
-        data[1]: -1
-        data[2]: -1
-        data[3]: 3
-      - op: 1
-        valueIndex: 28
+        valueIndex: 27
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 2
       - op: 1
-        valueIndex: 30
+        valueIndex: 29
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 1
       - op: 1
-        valueIndex: 31
+        valueIndex: 30
         data[0]: -1
         data[1]: -1
         data[2]: -1
@@ -815,32 +809,30 @@ VisualEffectResource:
     m_PropertySheet:
       m_Float:
         m_Array:
-        - m_ExpressionIndex: 3
+        - m_ExpressionIndex: 2
           m_Value: 0
         - m_ExpressionIndex: 12
           m_Value: 0.025
-        - m_ExpressionIndex: 17
+        - m_ExpressionIndex: 16
           m_Value: 0.8
       m_Vector2f:
         m_Array:
-        - m_ExpressionIndex: 16
+        - m_ExpressionIndex: 15
           m_Value: {x: 0, y: 0}
       m_Vector3f:
         m_Array:
-        - m_ExpressionIndex: 9
+        - m_ExpressionIndex: 10
           m_Value: {x: 1, y: 1, z: 1}
-        - m_ExpressionIndex: 14
+        - m_ExpressionIndex: 13
           m_Value: {x: 500, y: 500, z: 500}
-        - m_ExpressionIndex: 15
+        - m_ExpressionIndex: 14
           m_Value: {x: 0, y: 0, z: 0}
       m_Vector4f:
         m_Array:
-        - m_ExpressionIndex: 1
+        - m_ExpressionIndex: 3
           m_Value: {x: 0.07756319, y: 0.5026601, z: 0.7830189, w: 0}
       m_Uint:
-        m_Array:
-        - m_ExpressionIndex: 10
-          m_Value: 0
+        m_Array: []
       m_Int:
         m_Array:
         - m_ExpressionIndex: 0
@@ -853,21 +845,21 @@ VisualEffectResource:
         m_Array: []
       m_NamedObject:
         m_Array:
-        - m_ExpressionIndex: 13
+        - m_ExpressionIndex: 11
           m_Value: {fileID: 8400000, guid: 81d8e8137163fac4db2ff01aec79ede5, type: 2}
-        - m_ExpressionIndex: 18
+        - m_ExpressionIndex: 17
           m_Value: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
       m_Bool:
         m_Array: []
     m_ExposedExpressions:
     - nameId: alpha
-      index: 17
+      index: 16
     - nameId: baseColor
-      index: 1
+      index: 3
     - nameId: nPoint
       index: 0
     - nameId: PointData
-      index: 13
+      index: 11
     - nameId: size
       index: 12
     m_Buffers:
@@ -969,9 +961,9 @@ VisualEffectResource:
       temporaryBuffers: []
       values:
       - nameId: Count
-        index: 11
+        index: 8
       - nameId: Delay
-        index: 16
+        index: 15
       params: []
       processor: {fileID: 0}
       shaderSourceIndex: -1
@@ -988,9 +980,9 @@ VisualEffectResource:
       index: 1
     values:
     - nameId: bounds_center
-      index: 15
-    - nameId: bounds_size
       index: 14
+    - nameId: bounds_size
+      index: 13
     tasks:
     - type: 536870912
       buffers:
@@ -1003,16 +995,16 @@ VisualEffectResource:
       - nameId: Size_b
         index: 12
       - nameId: Alpha_c
-        index: 17
+        index: 16
       - nameId: Color_d
-        index: 8
+        index: 9
       - nameId: attributeMap_a
-        index: 13
+        index: 11
       params:
       - nameId: bounds_center
-        index: 15
-      - nameId: bounds_size
         index: 14
+      - nameId: bounds_size
+        index: 13
       processor: {fileID: 0}
       shaderSourceIndex: 0
     - type: 805306368
@@ -1031,7 +1023,7 @@ VisualEffectResource:
       temporaryBuffers: []
       values:
       - nameId: mainTexture
-        index: 18
+        index: 17
       params:
       - nameId: sortPriority
         index: 0
@@ -1891,14 +1883,13 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_InputSlots:
   - {fileID: 8926484042661614603}
-  - {fileID: 8926484042661614604}
   - {fileID: 8926484042661614605}
   - {fileID: 8926484042661614609}
   m_OutputSlots: []
   m_Disabled: 0
   attribute: position
   Composition: 0
-  SampleMode: 6
+  SampleMode: 2
   channels: 6
 --- !u!114 &8926484042661614603
 MonoBehaviour:
@@ -1941,46 +1932,6 @@ MonoBehaviour:
   m_Direction: 0
   m_LinkedSlots:
   - {fileID: 8926484042661614596}
---- !u!114 &8926484042661614604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c52d920e7fff73b498050a6b3c4404ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Parent: {fileID: 0}
-  m_Children: []
-  m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
-  m_UISuperCollapsed: 0
-  m_MasterSlot: {fileID: 8926484042661614604}
-  m_MasterData:
-    m_Owner: {fileID: 8926484042661614602}
-    m_Value:
-      m_Type:
-        m_SerializableType: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0
-    m_Space: 2147483647
-  m_Property:
-    name: Seed
-    m_serializedType:
-      m_SerializableType: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-    attributes:
-    - m_Type: 3
-      m_Min: -Infinity
-      m_Max: Infinity
-      m_Tooltip: Seed to compute the constant random
-      m_Regex: 
-      m_RegexMaxLength: 0
-  m_Direction: 0
-  m_LinkedSlots: []
 --- !u!114 &8926484042661614605
 MonoBehaviour:
   m_ObjectHideFlags: 0

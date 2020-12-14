@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     private List<float3> _PlottingData;
     [SerializeField, Range(0, 100)] float _FractalScale = 10f;
+    [SerializeField, Range(0, 25)] int _FractalIterations = 0;
 
     [SerializeField] private RenderTexture _ExternPointDataTexture;
     private RenderTexture _InternalPointDataTexture;
@@ -23,7 +24,8 @@ public class GameManager : MonoBehaviour
 
     private FractalData _CurrentFractal;
 
-    [SerializeField] private UnityEngine.UI.Slider _Slider;
+    [SerializeField] private UnityEngine.UI.Slider _ScaleSlider;
+    [SerializeField] private UnityEngine.UI.Slider _IterSlider;
     [SerializeField] private UnityEngine.VFX.VisualEffect _ExactEffect;
 
     // Start is called before the first frame update
@@ -35,12 +37,13 @@ public class GameManager : MonoBehaviour
             FractalExamples.KochSnowFlake,
             FractalExamples.MapleLeaf,
             FractalExamples.Tree1,
+            FractalExamples.Cross3D
         };
 
         _PlottingData = new List<float3>();
 
-        _CurrentFractal = _Examples[1];
-        SetFractal(1);
+        _CurrentFractal = _Examples[2];
+        SetFractal(2);
 
         InitializeTextures();
         InitializeCS();
@@ -117,6 +120,20 @@ public class GameManager : MonoBehaviour
         _FractalScale = scale;
     }
 
+    public void SetIterations(float val)
+    {
+        var intVal = Mathf.FloorToInt(val);
+
+        if (_CurrentFractal.InitialSet.Count * Mathf.Pow(_CurrentFractal.IFS.Count, intVal) <= _ExternPointDataTexture.width * _ExternPointDataTexture.height)
+            _FractalIterations = Mathf.FloorToInt(val);
+        else
+        {
+            _FractalIterations = _CurrentFractal.Iterations;
+            _IterSlider.value = _FractalIterations;
+        }
+            
+    }
+
     public void SetFractal(int val)
     {
         var current = _CurrentFractal;
@@ -128,8 +145,10 @@ public class GameManager : MonoBehaviour
 
         _CurrentFractal = current;
         _FractalScale = _CurrentFractal.Scale;
+        _FractalIterations = _CurrentFractal.Iterations;
 
-        _Slider.value = _FractalScale;
+        _ScaleSlider.value = _FractalScale;
+        _IterSlider.value = _FractalIterations;
     }
 
     public void ComputeFractal()
@@ -137,8 +156,8 @@ public class GameManager : MonoBehaviour
         _PlottingData = new List<float3>();
 
         GenerateFractal(
-            new List<float3>() { float3.zero }, 
-            _CurrentFractal.Iterations, 
+            _CurrentFractal.InitialSet, 
+            _FractalIterations, 
             _CurrentFractal.IFS, 
             _CurrentFractal.Probabilities, 
             _CurrentFractal.Probabilities == null? false : true, 
@@ -325,12 +344,72 @@ public static class FractalExamples
             new Vector4(0.02f, 1.62f, 0.00f, 1.00f)
             );
 
-    public static FractalData MapleLeaf = new FractalData(10, new List<float3>() { float3.zero }, null, new List<System.Func<float3, float3>>()
+    public static FractalData MapleLeaf = new FractalData(8, new List<float3>() { float3.zero/*, new float3(0.0f, 1.0f, 0.0f), new float3(1.0f, 1.0f, 0.0f), new float3(1.0f, 0.0f, 0.0f)*/ }, null, new List<System.Func<float3, float3>>()
         {
             (float3 p) => mtMat1.MultiplyPoint(p),
             (float3 p) => mtMat2.MultiplyPoint(p),
             (float3 p) => mtMat3.MultiplyPoint(p),
             (float3 p) => mtMat4.MultiplyPoint(p),
+        }, 1);
+
+    private static Matrix4x4 c3DMat1 = new Matrix4x4(
+            new Vector4(1.0f/3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(0.00f, 0.00f, 0.00f, 1.00f)
+            );
+
+    private static Matrix4x4 c3DMat2 = new Matrix4x4(
+            new Vector4(1.0f / 3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(2.0f / 3.0f, 0.00f, 0.00f, 1.00f)
+            );
+
+    private static Matrix4x4 c3DMat3 = new Matrix4x4(
+            new Vector4(1.0f / 3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(0.0f, 2.0f / 3.0f, 0.00f, 1.00f)
+            );
+
+    private static Matrix4x4 c3DMat4 = new Matrix4x4(
+            new Vector4(1.0f / 3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(0.0f, 0.0f, 2.0f / 3.0f, 1.00f)
+            );
+
+    private static Matrix4x4 c3DMat5 = new Matrix4x4(
+            new Vector4(1.0f / 3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(-2.0f / 3.0f, 0.00f, 0.00f, 1.00f)
+            );
+
+    private static Matrix4x4 c3DMat6 = new Matrix4x4(
+            new Vector4(1.0f / 3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(0.0f, -2.0f / 3.0f, 0.00f, 1.00f)
+            );
+
+    private static Matrix4x4 c3DMat7 = new Matrix4x4(
+            new Vector4(1.0f / 3.0f, 0.00f, 0.00f, 0.00f),
+            new Vector4(0.00f, 1.0f / 3.0f, 0.00f, 0.00f),
+            new Vector4(0.00f, 0.00f, 1.0f / 3.0f, 0.00f),
+            new Vector4(0.0f, 0.0f, -2.0f / 3.0f, 1.00f)
+            );
+
+    public static FractalData Cross3D = new FractalData(7, new List<float3>() { float3.zero/*, new float3(0.0f, 1.0f, 0.0f), new float3(1.0f, 1.0f, 0.0f), new float3(1.0f, 0.0f, 0.0f)*/ }, null, new List<System.Func<float3, float3>>()
+        {
+            (float3 p) => c3DMat1.MultiplyPoint(p),
+            (float3 p) => c3DMat2.MultiplyPoint(p),
+            (float3 p) => c3DMat3.MultiplyPoint(p),
+            (float3 p) => c3DMat4.MultiplyPoint(p),
+            (float3 p) => c3DMat5.MultiplyPoint(p),
+            (float3 p) => c3DMat6.MultiplyPoint(p),
+            (float3 p) => c3DMat7.MultiplyPoint(p),
         }, 1);
 }
 
